@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Search</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+ <script >
+  app = angular.module('search', []);
+
+app.controller('registerController', ($scope, $http, $location) =>{
+	$scope.getAllUsers = function(){
+		var url = "/users";
+
+		$http.get(url).then((response) => {
+			$scope.getMsg = response.data;
+		}, (response) => {
+			$scope.getErrMsg = "Error Status: " +  response.statusText;
+		});
+	}
+	
+});
+
+ </script>
+</head>
+ 
+<body > 
+    <div class="container" ng-app="search"> 
+        <div class = "col-md-6 login-left">
+            <h3>Manage all users</h3>
+            <hr class="divider">
+            <p>You can manage the users here.</p>
+					
+        
+        <br>
+            <div ng-controller="registerController">
+                <button ng-click="getAllUsers()" type="button" class="btn btn-default">Search all users</button>
+                <a href="/delete">Delete users</a>
+                <br>
+                <br>
+                <button class="btn btn-default"><a href="/">Back</a></button>
+               
+                <ul>
+                    <li ng-repeat="todo in getMsg">{{todo.name + " " + todo.status}}</li>
+                </ul>
+                <div>{{getErrMsg}}</div>
+
+                <br>
+            </div>
+        </div>
+       
+        
+    </div>	
+</div>
+</body>
+</html>

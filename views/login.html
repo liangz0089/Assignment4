@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>login</title>
+        <link rel="stylesheet" type="text/css"  href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+        <link rel="stylesheet" type="text/css"  href="stylesheets/style.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<script>
+		loginModule = angular.module('login',[]);
+		loginModule.controller('loginController',function($scope,$http){
+			$scope.loginpost = function(){
+				var url = '/logins';
+				var config = {
+						headers : {
+								'Accept': 'application/json'
+								}
+						}
+				var data = {
+					name: $scope.username,
+					password: $scope.password
+				}
+				$http.post(url,JSON.stringify(data), config).then(function (response){
+					$scope.postMsg= response.data;
+					if(!$scope.postMsg.Failed){
+						sessionStorage.setItem('userid', $scope.postMsg.user._id);                       
+                        location.href = '/search';
+					}
+				}, function (response){
+					$scope.postMsg = { 'Failed': true, 'message': "Error Status: " +  response.statusText};
+				});
+			}
+		})
+        </script>
+    </head>
+    <body>
+            <div id = "Login" class = "container" ng-app = "login">
+                <div class = "col-md-6 login-left" ng-controller = "loginController">
+                    <div class="section-title text-center center">
+                        <h2>MANAGERS LOG IN</h2>
+                        <hr class="divider">
+                        <p>If you are a manager of the system, please log in.</p>
+                    </div>
+                    <form form class="form-horizontal" ng-submit = "loginpost()">
+                        <div class="form-group">
+                            <span class="col-sm-3 control-label">User Name<label>*</label></span>
+                            <div class="col-sm-9">
+                                <input ng-model="username" id="username" class="form-control" type="text" required name="username" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="col-sm-3 control-label">Password<label>*</label></span>
+                            <div class="col-sm-9">
+                                <input ng-model="password" id="pwd" class="form-control" type="password" required name="password">
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-md-offset-3" ng-show = "postMsg.Failed">
+                            <div class="alert alert-danger">{{postMsg.message}}</div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-5, col-md-offset-7">
+                                <button type="reset" value="Reset" class="btn btn-default">Reset</button>
+                                <button type="submit" value="Login" class="btn btn-default">Login</button>
+                                <a href="/register">register</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                    
+                
+                <!-- <div class="col-md-6 login-right">
+                    <div class="section-title text-center center">
+                        <h2>NEW CUSTOMERS</h2>
+                        <hr class="divider">
+                        <p>If you are a new user to the system, please register your information.</p>
+                        <button class="btn btn-primary btn-sm" ><a href="/register">Create an Account</a></button>
+                    </div>
+                </div>	 -->
+                
+                <!-- <div class="col-md-6 login-right">
+                    <div class="section-title text-center center">
+                        <h2>MANAGE CUSTOMERS</h2>
+                        <hr class="divider">
+                        <p>If you are a MANAGER of the system, please click here to view users.</p>
+                        <button class="btn btn-default btn-sm" ><a href="/search">View users</a></button>
+                    </div>
+                </div>	 -->
+
+            </div>
+    </body>

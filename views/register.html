@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Register</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+ <script >
+  app = angular.module('register', []);
+
+// app.controller('registerController', ($scope, $http, $location) =>{
+// 	$scope.getAllUsers = function(){
+// 		var url = "/registers";
+		
+// 		$http.get(url).then((response) => {
+// 			$scope.getMsg = response.data;
+// 		}, (response) => {
+// 			$scope.getErrMsg = "Error Status: " +  response.statusText;
+// 		});
+// 	}
+
+
+// });
+ app.controller('postController', ($scope, $http, $location) => {
+	$scope.submitAddForm = function(){
+		var url = "/users";
+		
+		var config = {
+                headers : {
+                    'Accept': 'application/json'
+                }
+        }
+		var data = {
+            name: $scope.username,
+			password: $scope.password
+        };
+		
+		
+		$http.post(url, JSON.stringify(data), config).then((response) => {
+			$scope.postMsg= response.data;
+		}, (response) => {
+			$scope.postErrMsg = "Error Status: " +  response.statusText;
+		});
+		
+		// reset data fields
+		$scope.username = "";
+		$scope.password = "";
+	}	
+});
+ 
+ </script>
+</head>
+ 
+<body > 
+	<div class="container" ng-app="register"> 
+		<div class = "col-md-6 login-left">
+				<div class="section-title text-center center">
+					<h2>Register</h2>
+					<hr class="divider">
+					<p>If you want to be a manager, please register.</p>
+				</div>
+			
+			<br>
+			<!-- <div ng-controller="registerController">
+				<button ng-click="getAllUsers()" type="button" class="btn btn-default">get all my names</button>
+				<ul>
+					<li ng-repeat="todo in getMsg">{{todo.name + todo.password + " " + todo.status}}</li>
+				</ul>
+				<div>{{getErrMsg}}</div>
+
+				<br>
+			</div> -->
+
+			<div ng-controller="postController">				
+				<div>		
+					<form name="addForm" ng-submit="submitAddForm()">
+					<div class="form-group">
+						<label for="name">Name:</label>
+						<input ng-model="username" type="text" class="form-control" id="username" placeholder="Register Username"/>
+					</div>
+					<div class="form-group">
+						<label forPassword="Note">Password:</label>
+						<input ng-model="password" type="text" class="form-control" id="password" placeholder="Password"/>
+					</div>
+					<button type="submit" class="btn btn-default">Submit</button>
+					<span><a href="/">Login</a></span>
+					
+					</form>
+				</div>
+			</div>
+		</div>	
+	</div>
+</body>
+</html>

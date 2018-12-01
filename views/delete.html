@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Delete User</title>
+    <link rel="stylesheet" type="text/css"  href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css"  href="stylesheets/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+	<script type="text/javascript">
+		var userModule = angular.module('user', []);
+		userModule.controller('userController', ($scope, $http, $location)=>{
+			
+			$scope.deleteUser = function (argument) {
+				url = '/users/' + $scope.deleteName;
+				$http.delete(url).then(function(response){
+					alert(response.data.message);
+				}, function(response){
+					alert("fail to delete");
+				});
+			};
+		});
+	</script>
+</head>
+<body class="text-center">
+	
+	
+	<div class="container" ng-app="user">
+		<div class="row" ng-controller="userController">
+            <div class = "col-md-6 login-left">
+                    <h3>Delete Users</h3>
+                        <hr class="divider">
+                        <p>You can delete the users here.</p>
+				<table class="table table-hover text-center">
+					<caption>Delete</caption>
+					<form ng-submit="deleteUser()">
+						<tr>
+							<td>User Name</td>
+							<td><input type="text" name="deleteName" ng-model="deleteName"></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button type="submit" value="Submit" class="btn btn-default">Submit</button>
+								<a href="/search">Back</a>
+							</td>
+						</tr>
+					</form>
+				</table>
+			</div>
+		
+		</div>
+	</div>
+	
+	
+</body>
+</html>
